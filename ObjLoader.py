@@ -14,6 +14,30 @@ class ObjLoader:
             elif data_type == 'int':
                 coordinates.append(int(d)-1)
 
+<<<<<<< HEAD
+
+    @staticmethod # TODO unsorted vertex buffer for use with glDrawElements function
+    def create_unsorted_vertex_buffer(indices_data, vertices, textures, normals):
+        num_verts = len(vertices) // 3
+
+        for i1 in range(num_verts):
+            start = i1 * 3
+            end = start + 3
+            ObjLoader.buffer.extend(vertices[start:end])
+
+            for i2, data in enumerate(indices_data):
+                if i2 % 3 == 0 and data == i1:
+                    start = indices_data[i2 + 1] * 2
+                    end = start + 2
+                    ObjLoader.buffer.extend(textures[start:end])
+
+                    start = indices_data[i2 + 2] * 3
+                    end = start + 3
+                    ObjLoader.buffer.extend(normals[start:end])
+
+                    break
+
+=======
     @staticmethod # sorted vertex buffer for use with glDrawArrays function
     def create_sorted_vertex_buffer(indices_data, vertices, textures, normals):
         for i, ind in enumerate(indices_data):
@@ -29,6 +53,7 @@ class ObjLoader:
                 start = ind * 3
                 end = start + 3
                 ObjLoader.buffer.extend(normals[start:end])
+<<<<<<< HEAD
 
 
     @staticmethod
@@ -66,3 +91,6 @@ class ObjLoader:
                         indices.append(int(val[0])-1)
 
                 line = f.readline()
+=======
+>>>>>>> aac3fe85fb4827c0d82c6fa63a5db2e8185665ad
+>>>>>>> 9a8fe17e02224fd6218cb708eddf6dfd2bc717f2
