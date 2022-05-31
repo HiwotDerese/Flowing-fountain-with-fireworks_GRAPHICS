@@ -14,7 +14,8 @@ class ObjLoader:
             elif data_type == 'int':
                 coordinates.append(int(d)-1)
 
-<<<<<<< HEAD
+
+
 
     @staticmethod # TODO unsorted vertex buffer for use with glDrawElements function
     def create_unsorted_vertex_buffer(indices_data, vertices, textures, normals):
@@ -37,20 +38,19 @@ class ObjLoader:
 
                     break
 
-=======
-    @staticmethod # sorted vertex buffer for use with glDrawArrays function
-    def create_sorted_vertex_buffer(indices_data, vertices, textures, normals):
-        for i, ind in enumerate(indices_data):
-            if i % 3 == 0: # sort the vertex coordinates
-                start = ind * 3
-                end = start + 3
-                ObjLoader.buffer.extend(vertices[start:end])
-            elif i % 3 == 1: # sort the texture coordinates
-                start = ind * 2
-                end = start + 2
-                ObjLoader.buffer.extend(textures[start:end])
-            elif i % 3 == 2: # sort the normal vectors
-                start = ind * 3
-                end = start + 3
-                ObjLoader.buffer.extend(normals[start:end])
->>>>>>> aac3fe85fb4827c0d82c6fa63a5db2e8185665ad
+
+
+        if sorted:
+            # use with glDrawArrays
+            ObjLoader.create_sorted_vertex_buffer(all_indices, vert_coords, tex_coords, norm_coords)
+        else:
+            # use with glDrawElements
+            ObjLoader.create_unsorted_vertex_buffer(all_indices, vert_coords, tex_coords, norm_coords)
+
+        # ObjLoader.show_buffer_data(ObjLoader.buffer)
+
+        buffer = ObjLoader.buffer.copy() # create a local copy of the buffer list, otherwise it will overwrite the static field buffer
+        ObjLoader.buffer = [] # after copy, make sure to set it back to an empty list
+
+        return np.array(indices, dtype='uint32'), np.array(buffer, dtype='float32')
+
