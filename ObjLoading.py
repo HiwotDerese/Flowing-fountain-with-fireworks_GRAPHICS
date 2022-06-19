@@ -1,3 +1,4 @@
+
 import glfw
 from OpenGL.GL import *
 from OpenGL.GL.shaders import compileProgram, compileShader
@@ -25,6 +26,21 @@ void main()
     v_texture = a_texture;
 }
 """
+fragment_src = """
+# version 330
+
+in vec2 v_texture;
+
+out vec4 out_color;
+
+uniform sampler2D s_texture;
+
+void main()
+{
+    out_color = texture(s_texture, v_texture);
+}
+"""
+
 # glfw callback functions
 def window_resize(window, width, height):
     glViewport(0, 0, width, height)
@@ -79,3 +95,7 @@ glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, chibi_buffer.itemsize * 8, ctype
 # chibi normals
 glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, chibi_buffer.itemsize * 8, ctypes.c_void_p(20))
 glEnableVertexAttribArray(2)
+
+
+
+
