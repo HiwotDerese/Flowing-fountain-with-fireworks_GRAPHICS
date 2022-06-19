@@ -70,7 +70,7 @@ glfw.set_window_size_callback(window, window_resize)
 glfw.make_context_current(window)
 
 # load here the 3d meshes
-chibi_indices, chibi_buffer = ObjLoader.load_model("object/nnnn.obj")
+_indices, _buffer = ObjLoader.load_model("object/nnnn.obj")
 
 shader = compileProgram(compileShader(vertex_src, GL_VERTEX_SHADER), compileShader(fragment_src, GL_FRAGMENT_SHADER))
 
@@ -79,21 +79,21 @@ VAO = glGenVertexArrays(2)
 VBO = glGenBuffers(2)
 # EBO = glGenBuffers(1)
 
-# Chibi VAO
+#  VAO
 glBindVertexArray(VAO[0])
-# Chibi Vertex Buffer Object
+#  Vertex Buffer Object
 glBindBuffer(GL_ARRAY_BUFFER, VBO[0])
-glBufferData(GL_ARRAY_BUFFER, chibi_buffer.nbytes, chibi_buffer, GL_STATIC_DRAW)
+glBufferData(GL_ARRAY_BUFFER, _buffer.nbytes, _buffer, GL_STATIC_DRAW)
 
 
-# chibi vertices
+#  vertices
 glEnableVertexAttribArray(0)
-glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, chibi_buffer.itemsize * 8, ctypes.c_void_p(0))
-# chibi textures
+glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, _buffer.itemsize * 8, ctypes.c_void_p(0))
+#  textures
 glEnableVertexAttribArray(1)
-glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, chibi_buffer.itemsize * 8, ctypes.c_void_p(12))
-# chibi normals
-glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, chibi_buffer.itemsize * 8, ctypes.c_void_p(20))
+glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, _buffer.itemsize * 8, ctypes.c_void_p(12))
+#  normals
+glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, _buffer.itemsize * 8, ctypes.c_void_p(20))
 glEnableVertexAttribArray(2)
 
 
@@ -104,7 +104,7 @@ glEnable(GL_BLEND)
 glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
 
 projection = pyrr.matrix44.create_perspective_projection_matrix(90, 1280 / 720, 0.1, 100)
-chibi_pos = pyrr.matrix44.create_from_translation(pyrr.Vector3([0, -5, -10]))
+_pos = pyrr.matrix44.create_from_translation(pyrr.Vector3([0, -5, -10]))
 monkey_pos = pyrr.matrix44.create_from_translation(pyrr.Vector3([-4, 0, 0]))
 
 # eye, target, up
@@ -124,14 +124,14 @@ while not glfw.window_should_close(window):
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
 
     rot_y = pyrr.Matrix44.from_y_rotation(0.8 * glfw.get_time())
-    model = pyrr.matrix44.multiply(rot_y, chibi_pos)
+    model = pyrr.matrix44.multiply(rot_y, _pos)
 
-    # draw the chibi character
+    # draw the  character
     glBindVertexArray(VAO[0])
     # glBindTexture(GL_TEXTURE_2D, textures[0])
     glUniformMatrix4fv(model_loc, 1, GL_FALSE, model)
-    glDrawArrays(GL_TRIANGLES, 0, len(chibi_indices))
-    # glDrawElements(GL_TRIANGLES, len(chibi_indices), GL_UNSIGNED_INT, None)
+    glDrawArrays(GL_TRIANGLES, 0, len(_indices))
+    # glDrawElements(GL_TRIANGLES, len(_indices), GL_UNSIGNED_INT, None)
 
     rot_y = pyrr.Matrix44.from_y_rotation(-0.8 * glfw.get_time())
     model = pyrr.matrix44.multiply(rot_y, monkey_pos)

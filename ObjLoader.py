@@ -36,11 +36,6 @@ class ObjLoader:
                     ObjLoader.buffer.extend(normals[start:end])
 
                     break
-
-
-
-
-
         if sorted:
             # use with glDrawArrays
             ObjLoader.create_sorted_vertex_buffer(all_indices, vert_coords, tex_coords, norm_coords)
