@@ -42,3 +42,102 @@ void main()
     out_color = texture(s_texture, v_texture);
 }
 """
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+glUseProgram(shader)
+glClearColor(1, 1.0, 1.1, 1)
+glEnable(GL_DEPTH_TEST)
+glEnable(GL_BLEND)
+glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
+
+projection = pyrr.matrix44.create_perspective_projection_matrix(90, 1280 / 720, 0.1, 100)
+chibi_pos = pyrr.matrix44.create_from_translation(pyrr.Vector3([0, -5, -10]))
+monkey_pos = pyrr.matrix44.create_from_translation(pyrr.Vector3([-4, 0, 0]))
+
+# eye, target, up
+view = pyrr.matrix44.create_look_at(pyrr.Vector3([0, 0, 8]), pyrr.Vector3([0, 0, 0]), pyrr.Vector3([0, 1, 0]))
+
+model_loc = glGetUniformLocation(shader, "model")
+proj_loc = glGetUniformLocation(shader, "projection")
+view_loc = glGetUniformLocation(shader, "view")
+
+glUniformMatrix4fv(proj_loc, 1, GL_FALSE, projection)
+glUniformMatrix4fv(view_loc, 1, GL_FALSE, view)
+
+# the main application loop
+while not glfw.window_should_close(window):
+    glfw.poll_events()
+
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
+
+    rot_y = pyrr.Matrix44.from_y_rotation(0.8 * glfw.get_time())
+    model = pyrr.matrix44.multiply(rot_y, chibi_pos)
+
+    # draw the chibi character
+    glBindVertexArray(VAO[0])
+    # glBindTexture(GL_TEXTURE_2D, textures[0])
+    glUniformMatrix4fv(model_loc, 1, GL_FALSE, model)
+    glDrawArrays(GL_TRIANGLES, 0, len(chibi_indices))
+    # glDrawElements(GL_TRIANGLES, len(chibi_indices), GL_UNSIGNED_INT, None)
+
+    rot_y = pyrr.Matrix44.from_y_rotation(-0.8 * glfw.get_time())
+    model = pyrr.matrix44.multiply(rot_y, monkey_pos)
+
+    glfw.swap_buffers(window)
+
+# terminate glfw, free up allocated resources
+glfw.terminate()
+
