@@ -70,7 +70,7 @@ glfw.set_window_size_callback(window, window_resize)
 glfw.make_context_current(window)
 
 # load here the 3d meshes
-chibi_indices, chibi_buffer = ObjLoader.load_model("meshes/nnnn.obj")
+chibi_indices, chibi_buffer = ObjLoader.load_model("object/nnnn.obj")
 
 shader = compileProgram(compileShader(vertex_src, GL_VERTEX_SHADER), compileShader(fragment_src, GL_FRAGMENT_SHADER))
 
